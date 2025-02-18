@@ -1,0 +1,93 @@
+pickaxeName: ""
+pickaxeLore:
+  - ""
+
+oreRespawn: 10 # Seconds
+world: ""
+
+soulBalance: "" # {souls}
+
+Enchants: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {greedLvl} {lfLvl} | {price}
+  fortune:
+    name: ""
+    description:
+      - ""
+    maxLvl: 0
+    price: 0
+    enchMsg: ""
+    chance: 1 # type 1 for 100%
+
+    item: AIR
+    slot: 0
+
+  keyfinder:
+    name: ""
+    description:
+      - ""
+    maxLvl: 0
+    price: 0
+    enchMsg: ""
+    chance: 1 # type 1 for 100%
+
+    item: AIR
+    slot: 0
+
+  oreRegen:
+    name: ""
+    description:
+      - ""
+    maxLvl: 0
+    price: 0
+    enchMsg: ""
+    chance: 1 # type 1 for 100%
+
+    item: AIR
+    slot: 0
+
+  excavator:
+    name: ""
+    description:
+      - ""
+    maxLvl: 0
+    price: 0
+    enchMsg: ""
+    chance: 1 # type 1 for 100%
+
+    item: AIR
+    slot: 0
+
+  duplicator:
+    name: ""
+    description:
+      - ""
+    maxLvl: 0
+    price: 0
+    enchMsg: ""
+    chance: 1 # type 1 for 100%
+
+    item: AIR
+    slot: 0
+
+  greed:
+    name: ""
+    description:
+      - ""
+    maxLvl: 0
+    price: 0
+    enchMsg: ""
+    chance: 1 # type 1 for 100%
+
+    item: AIR
+    slot: 0
+
+  lootFinder:
+    name: ""
+    description:
+      - ""
+    maxLvl: 0
+    price: 0
+    enchMsg: ""
+    chance: 0
+
+    item: AIR
+    slot: 0

@@ -1,0 +1,10 @@
+name: NoahMiningV2
+version: '2'
+main: noah.noahMiningV2.NoahMiningV2
+api-version: '1.21'
+softdepend:
+  - PlaceholderAPI
+  - PoaLib
+commands:
+  souladmin:
+    permission: op
