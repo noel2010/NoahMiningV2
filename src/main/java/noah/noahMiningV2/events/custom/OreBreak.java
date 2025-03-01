@@ -25,17 +25,17 @@ public class OreBreak extends Event implements Cancellable {
     @Setter
     @Getter
     String oreType;
+    @Setter
+    @Getter
+    Player p;
 
 
-    public OreBreak(Block block, Location loc, String oreType){
+    public OreBreak(Block block, Location loc, String oreType, Player p){
         this.block = block;
         this.loc = loc;
         this.oreType = oreType;
+        this.p = p;
     }
-
-    @Setter
-    @Getter
-    @Nullable Player player;
 
     public static HandlerList getHandlerList(){ return HANDLER_LIST; }
     @Override

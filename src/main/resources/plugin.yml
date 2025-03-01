@@ -8,3 +8,6 @@ softdepend:
 commands:
   souladmin:
     permission: op
+  souls:
+  test:
+    permission: op

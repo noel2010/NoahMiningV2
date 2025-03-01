@@ -6,6 +6,38 @@ oreRespawn: 10 # Seconds
 world: ""
 
 soulBalance: "" # {souls}
+oreBreak: "" # {souls}
+
+messages:
+  noPickaxeHeld: "<red>You need to hold a pickaxe in order to break ores."
+
+oreChances:
+  coal: 40.0
+  iron: 25.0
+  copper: 15.0
+  gold: 10.0
+  diamond: 5.0
+  emerald: 5.0
+
+oreValues:
+  coal:
+    min: 0
+    max: 5
+  iron:
+    min: 0
+    max: 5
+  copper:
+    min: 0
+    max: 5
+  gold:
+    min: 0
+    max: 5
+  diamond:
+    min: 0
+    max: 5
+  emerald:
+    min: 0
+    max: 5
 
 Enchants: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {greedLvl} {lfLvl} | {price}
   fortune:

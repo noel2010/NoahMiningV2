@@ -1,40 +1,54 @@
 package noah.noahMiningV2.inventories;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
+import dev.siea.uilabs.UILabs;
+import dev.siea.uilabs.element.Button;
+import dev.siea.uilabs.frame.Border;
+import dev.siea.uilabs.gui.DefaultInventoryGui;
+import noah.noahMiningV2.NoahMiningV2;
+import noah.noahMiningV2.utils.OreUtils;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
-public class OreSelect implements InventoryHolder {
+import java.util.List;
 
-    Inventory inv;
-    Player p;
+public class OreSelect {
 
-    public OreSelect(){
-        inv = Bukkit.createInventory(this, 9, MiniMessage.miniMessage().deserialize("<red>Ore Selector"));
-        ItemStack border = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemMeta borderMeta = border.getItemMeta();
-        borderMeta.displayName(Component.text(""));
-        border.setItemMeta(borderMeta);
-        ItemStack random = new ItemStack(Material.RED_STAINED_GLASS_PANE);
-        ItemMeta randomMeta = random.getItemMeta();
-        randomMeta.displayName(MiniMessage.miniMessage().deserialize("<gray>Random Ore"));
-        random.setItemMeta(randomMeta);
+    UILabs ui = new UILabs(NoahMiningV2.INSTANCE);
 
-        inv.setItem(0, border);
-        inv.setItem(8, border);
-        inv.setItem(7, random);
+    public OreSelect(Player p, Location loc){
+        DefaultInventoryGui gui = ui.create("§cOre Select");
+        gui.setBorder(Border.of(Material.GRAY_STAINED_GLASS_PANE));
+        gui.addElement(new Button(Material.COAL_ORE, "Coal", List.of("", "Set this ore as coal")){
+            @Override
+            public void onButtonPressed(InventoryClickEvent e){ OreUtils.respawnSpecificOre(loc, Material.COAL_ORE); }
+        });
+        gui.addElement(new Button(Material.IRON_ORE, "Iron", List.of("", "Set this ore as iron")){
+            @Override
+            public void onButtonPressed(InventoryClickEvent e){ OreUtils.respawnSpecificOre(loc, Material.IRON_ORE); }
+        });
+        gui.addElement(new Button(Material.COPPER_ORE, "Copper", List.of("", "Set this ore as copper")){
+            @Override
+            public void onButtonPressed(InventoryClickEvent e){ OreUtils.respawnSpecificOre(loc, Material.COPPER_ORE); }
+        });
+        gui.addElement(new Button(Material.GOLD_ORE, "Gold", List.of("", "Set this ore as gold")){
+            @Override
+            public void onButtonPressed(InventoryClickEvent e){ OreUtils.respawnSpecificOre(loc, Material.GOLD_ORE); }
+        });
+        gui.addElement(new Button(Material.DIAMOND_ORE, "Diamond", List.of("", "Set this ore as diamond")){
+            @Override
+            public void onButtonPressed(InventoryClickEvent e){ OreUtils.respawnSpecificOre(loc, Material.DIAMOND_ORE); }
+        });
+        gui.addElement(new Button(Material.EMERALD_ORE, "Emerald", List.of("", "Set this ore as emerald")){
+            @Override
+            public void onButtonPressed(InventoryClickEvent e){ OreUtils.respawnSpecificOre(loc, Material.EMERALD_ORE); }
+        });
+        gui.addElement(new Button(Material.COAL_ORE, "Coal", List.of("", "Set this ore as random")){
+            @Override
+            public void onButtonPressed(InventoryClickEvent e){ OreUtils.respawnOre(loc); }
+        });
+        gui.view(p);
     }
 
-
-    @Override
-    public @NotNull Inventory getInventory() {
-        return null;
-    }
 }
