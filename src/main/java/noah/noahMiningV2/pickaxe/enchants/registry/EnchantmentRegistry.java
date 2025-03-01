@@ -17,7 +17,7 @@ public class EnchantmentRegistry {
     private final Map<String, Enchant> enchantments = new HashMap<>();
     public EnchantmentRegistry(){registerDefaults();}
 
-    public void register(String id, Enchant enchatment){enchantments.put(id, enchatment)}
+    public void register(String id, Enchant enchatment){enchantments.put(id, enchatment);}
     public ConfiguredItem getConfiguredItem(ItemStack item){
         if (item == null || !item.hasItemMeta()) return null;
 
