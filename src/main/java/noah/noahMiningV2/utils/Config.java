@@ -23,6 +23,7 @@ public class Config {
     public int getEnchantPrice(String enchant){ return config.getInt("Enchant"+enchant+".price");}
     public String getEnchantMessage(String enchant){ return config.getString("Enchant"+enchant+".enchMsg");}
     public double getEnchantChance(String enchant) { return config.getDouble("Enchant"+enchant+".chance"); }
+    public int getEnchantRadius(String enchant) { if (config.getInt("Enchant."+enchant+".radius") > 0) return config.getInt("Enchant."+enchant+".radius"); return 0; }
 
     public String getEnchantName(String enchant) { return config.getString("Enchant"+enchant+".name"); }
     public List<String> getEnchantDescription(String enchant) { return config.getStringList("Enchant"+enchant+".description"); }

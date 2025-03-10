@@ -27,6 +27,6 @@ public class Placeholder extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, @NotNull String params){
         if (params.equalsIgnoreCase("souls"))
             return ""+(new PlayerData(player.getUniqueId())).getSouls();
-        return ""+0;
+        return "N/A";
     }
 }

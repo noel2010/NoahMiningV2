@@ -84,6 +84,7 @@ Enchants: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {greedLv
     price: 0
     enchMsg: ""
     chance: 1 # type 1 for 100%
+    radius: 2 #n^3
 
     item: AIR
     slot: 0

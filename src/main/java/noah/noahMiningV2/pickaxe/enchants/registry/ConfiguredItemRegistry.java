@@ -2,6 +2,7 @@ package noah.noahMiningV2.pickaxe.enchants.registry;
 
 import noah.noahMiningV2.NoahMiningV2;
 import noah.noahMiningV2.data.ench.ConfiguredItem;
+import noah.noahMiningV2.events.custom.OreBreak;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,10 +43,10 @@ public class ConfiguredItemRegistry implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event){
-        Player player = event.getPlayer();
+    public void onBlockBreak(OreBreak event){
+        Player player = event.getP();
         ConfiguredItem item = equippedItems.get(player);
-        if (item != null) item.onBlockBreak(event);
+        if (item != null) item.onOreBreak(event);
     }
 
     @EventHandler
