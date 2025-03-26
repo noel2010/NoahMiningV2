@@ -34,6 +34,7 @@ public class CustomPickaxe {
     }
 
     public static CustomPickaxe of(ItemStack item){ return new CustomPickaxe(item); }
+    public static CustomPickaxe of(ItemStack item, Map<String, Integer> enchants){ return new CustomPickaxe(item, enchants); }
 
     public Map<String, Integer> getEnchants(){
         if (!pickaxeItem.getItemMeta().getPersistentDataContainer().has(enchantKey)) return null;

@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 
+import java.util.Map;
+
 public class EnchantManager {
 
     @Setter
@@ -33,9 +35,21 @@ public class EnchantManager {
     public CustomPickaxe upgradeEnchant(CustomPickaxe pickaxe, String id){
         if(!pickaxe.getEnchants().containsKey(id)) return pickaxe;
         if (!conf.getEnchantIDs().contains(id)) return pickaxe;
+        Map<String, Integer> enchants = pickaxe.getEnchants();
+        enchants.put(id, enchants.get(id)+1);
 
         pickaxe.updateEnchants();
-        return null;
+        return CustomPickaxe.of(pickaxe.getPickaxeItem(), enchants);
+    }
+
+    public CustomPickaxe degradeEnchant(CustomPickaxe pickaxe, String id){
+        if(!pickaxe.getEnchants().containsKey(id)) return pickaxe;
+        if (!conf.getEnchantIDs().contains(id)) return pickaxe;
+        Map<String, Integer> enchants = pickaxe.getEnchants();
+        enchants.put(id, enchants.get(id)-1);
+
+        pickaxe.updateEnchants();
+        return CustomPickaxe.of(pickaxe.getPickaxeItem(), enchants);
     }
 
     public void activateEnchants(Location loc, CustomPickaxe pickaxe){
