@@ -5,28 +5,28 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import noah.noahMiningV2.NoahMiningV2;
 import noah.noahMiningV2.data.PlayerData;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Config {
 
     private final FileConfiguration config = NoahMiningV2.INSTANCE.getConfig();
     private final Random rand = new Random();
 
-    public Material getItem(String enchant){ return Material.valueOf(config.getString("Enchant"+enchant+".item")); }
-    public int getSlot(String enchant) { return config.getInt("Enchant"+enchant+".slot "); }
-    public int getEnchantLimit(String enchant){ return config.getInt("Enchant"+enchant+".maxLvl");}
-    public int getEnchantPrice(String enchant){ return config.getInt("Enchant"+enchant+".price");}
-    public String getEnchantMessage(String enchant){ return config.getString("Enchant"+enchant+".enchMsg");}
-    public double getEnchantChance(String enchant) { return config.getDouble("Enchant"+enchant+".chance"); }
-    public int getEnchantRadius(String enchant) { if (config.getInt("Enchant."+enchant+".radius") > 0) return config.getInt("Enchant."+enchant+".radius"); return 0; }
+    public Material getItem(String enchant){ return Material.valueOf(config.getString("EnchantManager"+enchant+".item")); }
+    public int getSlot(String enchant) { return config.getInt("EnchantManager"+enchant+".slot "); }
+    public int getEnchantLimit(String enchant){ return config.getInt("EnchantManager"+enchant+".maxLvl");}
+    public int getEnchantPrice(String enchant){ return config.getInt("EnchantManager"+enchant+".price");}
+    public String getEnchantMessage(String enchant){ return config.getString("EnchantManager"+enchant+".enchMsg");}
+    public double getEnchantChance(String enchant) { return config.getDouble("EnchantManager"+enchant+".chance"); }
+    public int getEnchantRadius(String enchant) { if (config.getInt("EnchantManager."+enchant+".radius") > 0) return config.getInt("EnchantManager."+enchant+".radius"); return 0; }
 
-    public String getEnchantName(String enchant) { return config.getString("Enchant"+enchant+".name"); }
-    public List<String> getEnchantDescription(String enchant) { return config.getStringList("Enchant"+enchant+".description"); }
+    public String getEnchantName(String enchant) { return config.getString("EnchantManager"+enchant+".name"); }
+    public List<String> getEnchantDescription(String enchant) { return config.getStringList("EnchantManager"+enchant+".description"); }
 
     public String getPickaxeName() { return config.getString("pickaxeName"); }
     public List<String> getPickaxeLore() { return config.getStringList("pickaxeLore"); }
@@ -54,6 +54,15 @@ public class Config {
     public int getRespawnTime() { return config.getInt("oreRespawn"); }
 
     public String getErrorMessage(String key){ return config.getString("messages"+key); }
+
+    public List<String> getEnchantIDs() {
+        ConfigurationSection section = NoahMiningV2.INSTANCE.getConfig().getConfigurationSection("enchantIDs");
+        if (section == null) return new ArrayList<>();
+
+        return new ArrayList<>((Collection) section.getValues(false).values().stream()
+                .map(Object::toString)
+                .collect(Collectors.toList()));
+    }
 
     public Component getColoredMessage(String configMessage){ return MiniMessage.miniMessage().deserialize(configMessage); }
     public List<Component> getColoredLore(List<String> configLore) {

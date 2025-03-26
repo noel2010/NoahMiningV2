@@ -39,6 +39,15 @@ oreValues:
     min: 0
     max: 5
 
+enchantIDs:
+  fortune: "fortune"
+  keyFinder: "keyfinder"
+  oreRegen: "oreregen"
+  excavator: "excavator"
+  dupe: "dupe"
+  greed: "greed"
+  lootFinder: "lootfinder"
+
 Enchants: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {greedLvl} {lfLvl} | {price}
   fortune:
     name: ""
