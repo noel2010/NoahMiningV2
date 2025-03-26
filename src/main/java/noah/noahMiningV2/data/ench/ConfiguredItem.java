@@ -18,25 +18,24 @@ public final class ConfiguredItem {
     private final List<ConfiguredEnchant> enchants;
     private final Rune rune;
 
-    private ConfiguredItem(ItemStack item, List<ConfiguredEnchant> enchants){
+    private ConfiguredItem(ItemStack item, List<ConfiguredEnchant> enchants, Rune rune){
         this.item = item;
         this.enchants = enchants;
-    }
-    private ConfiguredItem(ItemStack item, Rune rune){
-        this.item = item;
         this.rune = rune;
     }
-    public static ConfiguredItem of(ItemStack item, List<ConfiguredEnchant> enchants){ return new ConfiguredItem(item, enchants); }
-    public static ConfiguredItem of(ItemStack item, Map<Enchant, Integer> enchants){
+
+    public static ConfiguredItem of(ItemStack item, List<ConfiguredEnchant> enchants, Rune rune){ return new ConfiguredItem(item, enchants, rune); }
+    public static ConfiguredItem of(ItemStack item, Map<Enchant, Integer> enchants, Rune rune){
         List<ConfiguredEnchant> enchantments = new ArrayList<>();
         for (Map.Entry<Enchant, Integer> entry : enchants.entrySet())
             enchantments.add(ConfiguredEnchant.of(entry.getKey(), entry.getValue()));
-        return new ConfiguredItem(item, enchantments);
+        return new ConfiguredItem(item, enchantments, rune);
     }
 
     public void onOreBreak(OreBreak event){
         for (ConfiguredEnchant enchant : enchants)
             if (enchant.getEnchantment() instanceof Enchant enchantment)
                 enchantment.onOreBreak(event, enchant.getLevel());
+        if(rune!=null) rune.onRuneActivate();
     }
 }
