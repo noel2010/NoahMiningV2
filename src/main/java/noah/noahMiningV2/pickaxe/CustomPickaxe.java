@@ -21,6 +21,7 @@ public class CustomPickaxe {
     private ItemStack pickaxeItem;
 
     private NamespacedKey enchantKey = new NamespacedKey(NoahMiningV2.INSTANCE, "enchant");
+    private NamespacedKey runeKey = new NamespacedKey(NoahMiningV2.INSTACNE, "rune");
     private final Config conf = new Config();
 
     private CustomPickaxe(ItemStack item){
