@@ -57,15 +57,18 @@ public class CustomPickaxe {
     }
 
     private void setDefaultEnchants(){
-        PersistentDataContainer pdc = pickaxeItem.getItemMeta().getPersistentDataContainer();
+        ItemMeta meta = pickaxeItem.getItemMeta();
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
         List<String> enchantIDs = conf.getEnchantIDs();
         Map<String, Integer> enchants = new HashMap<>();
         for (String id : enchantIDs) enchants.put(id, 0);
         pdc.set(enchantKey, PersistentDataType.STRING, MapToStringEnchants(enchants));
+        pickaxeItem.setItemMeta(meta);
     }
 
     public void updateEnchants(){
-        PersistentDataContainer pdc = pickaxeItem.getItemMeta().getPersistentDataContainer();
+        ItemMeta meta = pickaxeItem.getItemMeta();
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
         if (!pdc.has(enchantKey)) return;
         List<String> enchantIDs = conf.getEnchantIDs();
         Map<String, Integer> enchants = getEnchants();
@@ -77,6 +80,7 @@ public class CustomPickaxe {
             enchants.put(enchant, 0);
         }
         pdc.set(enchantKey, PersistentDataType.STRING, MapToStringEnchants(enchants));
+        pickaxeItem.setItemMeta(meta);
     }
 
     private String MapToStringEnchants(Map<String, Integer> enchants){
