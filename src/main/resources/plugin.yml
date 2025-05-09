@@ -5,9 +5,16 @@ api-version: '1.21'
 softdepend:
   - PlaceholderAPI
   - PoaLib
+  - Vault
 commands:
   souladmin:
     permission: op
   souls:
-  test:
+  pickaxe:
+    permission: op
+  pdctest:
+    permission: op
+  animationtest:
+    permission: op
+  testore:
     permission: op

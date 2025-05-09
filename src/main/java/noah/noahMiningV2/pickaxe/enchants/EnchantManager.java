@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import noah.noahMiningV2.NoahMiningV2;
 import noah.noahMiningV2.pickaxe.CustomPickaxe;
+import noah.noahMiningV2.pickaxe.enchants.impl.Excavation;
+import noah.noahMiningV2.pickaxe.enchants.infr.Enchant;
 import noah.noahMiningV2.utils.Config;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -11,49 +13,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EnchantManager {
 
-    @Setter
-    @Getter
-    private int soulsMined;
-    private Player player;
+    public EnchantManager() {registerDefault();}
 
     private final Config conf = new Config();
+    private final NamespacedKey enchantKey = new NamespacedKey(NoahMiningV2.INSTANCE, "enchant");
+    private final List<String> enchantIDs = conf.getEnchantIDs();
 
-    private NamespacedKey enchantKey = new NamespacedKey(NoahMiningV2.INSTANCE, "enchant");
-
-    public EnchantManager(Player player){ this.player = player; soulsMined = 0; }
-
-    private CustomPickaxe getPickaxe(ItemStack item){
-        PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
-        if (!pdc.has(enchantKey)) return null;
-        return CustomPickaxe.of(item);
+    @Getter
+    private Map<String, Enchant> enchants = new HashMap<>();
+    private void register(Enchant ench){ enchants.put(ench.getID(),ench); }
+    private void registerDefault(){
+        register(new Excavation());
     }
 
-    public CustomPickaxe upgradeEnchant(CustomPickaxe pickaxe, String id){
-        if(!pickaxe.getEnchants().containsKey(id)) return pickaxe;
-        if (!conf.getEnchantIDs().contains(id)) return pickaxe;
-        Map<String, Integer> enchants = pickaxe.getEnchants();
-        enchants.put(id, enchants.get(id)+1);
-
-        pickaxe.updateEnchants();
-        return CustomPickaxe.of(pickaxe.getPickaxeItem(), enchants);
-    }
-
-    public CustomPickaxe degradeEnchant(CustomPickaxe pickaxe, String id){
-        if(!pickaxe.getEnchants().containsKey(id)) return pickaxe;
-        if (!conf.getEnchantIDs().contains(id)) return pickaxe;
-        Map<String, Integer> enchants = pickaxe.getEnchants();
-        enchants.put(id, enchants.get(id)-1);
-
-        pickaxe.updateEnchants();
-        return CustomPickaxe.of(pickaxe.getPickaxeItem(), enchants);
-    }
-
-    public void activateEnchants(Location loc, CustomPickaxe pickaxe){
-
-    }
 
 }

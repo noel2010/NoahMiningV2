@@ -1,6 +1,8 @@
 package noah.noahMiningV2.utils;
 
+import noah.noahMiningV2.NoahMiningV2;
 import noah.noahMiningV2.events.custom.OreRespawn;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -8,38 +10,30 @@ import org.bukkit.entity.Player;
 import poa.poalib.shaded.NBTBlock;
 import poa.poalib.shaded.NBTCompound;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class OreUtils {
 
-    private static Map<Material, Double> oreChances = new HashMap<>();
-    private static final Config config = new Config();
-    private static List<Double> chances = config.getOreChances();
     private static final Config conf = new Config();
-
-    static {
-        oreChances.put(Material.COAL_ORE, chances.getFirst());
-        oreChances.put(Material.IRON_ORE, chances.get(1));
-        oreChances.put(Material.COPPER_ORE, chances.get(2));
-        oreChances.put(Material.GOLD_ORE, chances.get(3));
-        oreChances.put(Material.DIAMOND_ORE, chances.get(4));
-        oreChances.put(Material.EMERALD_ORE, chances.getLast());
-    }
+    private static Map<Material, Double> oreChances = conf.getOreChances();
 
     public static void respawnOre(Location loc) {
         normalizeChances(oreChances);
         Material chosenOre = pickRandomOre(oreChances);
+        Bukkit.broadcastMessage("Chose ore");
         if (chosenOre != null) {
-            OreRespawn rEvent = new OreRespawn(loc.getBlock(), loc, chosenOre.toString());
+            OreRespawn rEvent = new OreRespawn(loc.getBlock(), loc, chosenOre);
             rEvent.callEvent();
+            Bukkit.broadcastMessage("Event called");
             if (!rEvent.isCancelled()) {
-                NBTCompound data = new NBTBlock(loc.getBlock()).getData();
-                data.setInteger("NoahMining;souls", conf.getRandomOreValue(oreTranslator(chosenOre)));
                 loc.getBlock().setType(chosenOre);
+                if (NoahMiningV2.mined.contains(loc)) NoahMiningV2.mined.remove(loc);
+                Bukkit.broadcastMessage("Respawned");
             }
+        }else{
+            NoahMiningV2.INSTANCE.getLogger().severe("-------------------------");
+            NoahMiningV2.INSTANCE.getLogger().severe("Selected Ore is null.");
+            NoahMiningV2.INSTANCE.getLogger().severe("-------------------------");
         }
     }
 
@@ -56,11 +50,9 @@ public class OreUtils {
     }
 
     public static void respawnSpecificOre(Location loc, Material ore){
-        OreRespawn rEvent = new OreRespawn(loc.getBlock(), loc, ore.toString());
+        OreRespawn rEvent = new OreRespawn(loc.getBlock(), loc, ore);
         rEvent.callEvent();
         if (!rEvent.isCancelled()) {
-            NBTCompound data = new NBTBlock(loc.getBlock()).getData();
-            data.setInteger("NoahMining;souls", conf.getRandomOreValue(oreTranslator(ore)));
             loc.getBlock().setType(ore);
         }
     }
@@ -86,5 +78,16 @@ public class OreUtils {
             }
         }
         return null;
+    }
+
+    public static List<Material> getOres(){
+        List<Material> ores = new ArrayList<>();
+        ores.add(Material.COAL_ORE);
+        ores.add(Material.IRON_ORE);
+        ores.add(Material.COPPER_ORE);
+        ores.add(Material.GOLD_ORE);
+        ores.add(Material.DIAMOND_ORE);
+        ores.add(Material.EMERALD_ORE);
+        return ores;
     }
 }

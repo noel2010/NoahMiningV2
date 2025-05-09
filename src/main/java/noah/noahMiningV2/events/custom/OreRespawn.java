@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import noah.noahMiningV2.data.PlayerData;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -25,10 +26,10 @@ public class OreRespawn extends Event implements Cancellable {
     Location loc;
     @Setter
     @Getter
-    String oreType;
+    Material oreType;
 
 
-    public OreRespawn(Block block, Location loc, String oreType){
+    public OreRespawn(Block block, Location loc, Material oreType){
         this.block = block;
         this.loc = loc;
         this.oreType = oreType;

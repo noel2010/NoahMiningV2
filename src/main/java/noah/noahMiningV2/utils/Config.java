@@ -7,7 +7,9 @@ import noah.noahMiningV2.data.PlayerData;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,12 +19,12 @@ public class Config {
     private final FileConfiguration config = NoahMiningV2.INSTANCE.getConfig();
     private final Random rand = new Random();
 
-    public Material getItem(String enchant){ return Material.valueOf(config.getString("EnchantManager"+enchant+".item")); }
-    public int getSlot(String enchant) { return config.getInt("EnchantManager"+enchant+".slot "); }
-    public int getEnchantLimit(String enchant){ return config.getInt("EnchantManager"+enchant+".maxLvl");}
-    public int getEnchantPrice(String enchant){ return config.getInt("EnchantManager"+enchant+".price");}
-    public String getEnchantMessage(String enchant){ return config.getString("EnchantManager"+enchant+".enchMsg");}
-    public double getEnchantChance(String enchant) { return config.getDouble("EnchantManager"+enchant+".chance"); }
+    public Material getItem(String enchant){ return Material.valueOf(config.getString("EnchantManager."+enchant+".item")); }
+    public int getSlot(String enchant) { return config.getInt("EnchantManager."+enchant+".slot "); }
+    public int getEnchantLimit(String enchant){ return config.getInt("EnchantManager."+enchant+".maxLvl");}
+    public int getEnchantPrice(String enchant){ return config.getInt("EnchantManager."+enchant+".price");}
+    public String getEnchantMessage(String enchant){ return config.getString("EnchantManager."+enchant+".enchMsg");}
+    public double getEnchantChance(String enchant) { return config.getDouble("EnchantManager."+enchant+".chance"); }
     public int getEnchantRadius(String enchant) { if (config.getInt("EnchantManager."+enchant+".radius") > 0) return config.getInt("EnchantManager."+enchant+".radius"); return 0; }
 
     public String getEnchantName(String enchant) { return config.getString("EnchantManager"+enchant+".name"); }
@@ -38,17 +40,24 @@ public class Config {
     }
     public String getBreakMessage() { return config.getString("oreBreak"); }
 
-    public List<Double> getOreChances(){
-        if (config.getDoubleList("oreChances").size() < 6 || config.getDoubleList("oreChances").size() > 6){
-            NoahMiningV2.INSTANCE.getLogger().severe("All ore chances are not configured correctly.");
-            return null;
+    public Map<Material, Double> getOreChances(){
+        Map<Material, Double> chances = new HashMap<>();
+        if (config.isConfigurationSection("oreChances")) return chances;
+        for (String key : config.getConfigurationSection("oreChances").getKeys(false)){
+            try {
+                Material mat = Material.valueOf(key.toUpperCase());
+                double chance = config.getDouble("oreChances."+key);
+                chances.put(mat,chance);
+            } catch (IllegalArgumentException e){
+                NoahMiningV2.INSTANCE.getLogger().severe("Invalid Material in oreChances: "+key);
+            }
         }
-        return config.getDoubleList("oreChances");
+        return chances;
     }
 
-    public int getOreValueMax(String ore) { return config.getInt("oreValues."+ore+".max"); }
-    public int getOreValueMin(String ore) { return config.getInt("oreValues."+ore+".min"); }
-    public int getRandomOreValue(String ore) { return rand.nextInt(getOreValueMin(ore), getOreValueMax(ore)+1); }
+    private int getOreValueMax(Material ore) { return config.getInt("oreValues."+ore.toString()+".max"); }
+    private int getOreValueMin(Material ore) { return config.getInt("oreValues."+ore.toString()+".min"); }
+    public int getRandomOreValue(Material ore) { return rand.nextInt(getOreValueMin(ore), getOreValueMax(ore)+1); }
 
     public String getWorldName() { return config.getString("world"); }
     public int getRespawnTime() { return config.getInt("oreRespawn"); }
@@ -56,13 +65,30 @@ public class Config {
     public String getErrorMessage(String key){ return config.getString("messages"+key); }
 
     public List<String> getEnchantIDs() {
-        ConfigurationSection section = NoahMiningV2.INSTANCE.getConfig().getConfigurationSection("enchantIDs");
+        ConfigurationSection section = config.getConfigurationSection("enchantIDs");
         if (section == null) return new ArrayList<>();
-
         return new ArrayList<>((Collection) section.getValues(false).values().stream()
                 .map(Object::toString)
                 .collect(Collectors.toList()));
     }
+
+    public List<Double> getLootChances() {
+        ConfigurationSection section = config.getConfigurationSection("lootChances");
+        if (section == null) return new ArrayList<>();
+        return section.getValues(false).values().stream()
+                .map(obj -> {
+                    if (obj instanceof Number) return ((Number) obj).doubleValue();
+                    try {
+                        return Double.parseDouble(obj.toString());
+                    } catch (NumberFormatException e) {
+                        return 0.0; // or throw, or log warning
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
+
+    public List<String> getRuneIDs() { return config.getStringList("runeIDs"); }
 
     public Component getColoredMessage(String configMessage){ return MiniMessage.miniMessage().deserialize(configMessage); }
     public List<Component> getColoredLore(List<String> configLore) {
@@ -70,4 +96,17 @@ public class Config {
         configLore.forEach(line->{ lore.add(MiniMessage.miniMessage().deserialize(line)); });
         return lore;
     }
+
+
+    public ItemStack ConstructPickaxe(){
+        ItemStack item = new ItemStack(Material.DIAMOND_PICKAXE);
+        ItemMeta iMeta = item.getItemMeta();
+        iMeta.displayName(this.getColoredMessage(this.getPickaxeName()));
+        iMeta.lore(this.getColoredLore(this.getPickaxeLore()));
+        iMeta.setAttributeModifiers(Material.DIAMOND_PICKAXE.getDefaultAttributeModifiers());
+        iMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        item.setItemMeta(iMeta);
+        return item;
+    }
+
 }

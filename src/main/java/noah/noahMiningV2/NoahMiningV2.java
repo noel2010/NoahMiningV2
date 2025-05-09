@@ -1,16 +1,17 @@
 package noah.noahMiningV2;
 
-import noah.noahMiningV2.commands.Souls;
-import noah.noahMiningV2.commands.SoulsAdmin;
-import noah.noahMiningV2.commands.Test;
+import lombok.Getter;
+import net.milkbowl.vault2.economy.Economy;
+import noah.noahMiningV2.commands.*;
 import noah.noahMiningV2.events.*;
+import noah.noahMiningV2.jda.JdaMain;
 import noah.noahMiningV2.placeholder.Placeholder;
 import noah.noahMiningV2.utils.OreUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -32,6 +33,7 @@ public final class NoahMiningV2 extends JavaPlugin {
     public void onEnable() {
         INSTANCE = this;
         saveDefaultConfig();
+        //JdaMain jda = new JdaMain();
         PluginManager pm = Bukkit.getPluginManager();
         if (!getDataFolder().exists())
             getDataFolder().mkdirs();
@@ -51,12 +53,16 @@ public final class NoahMiningV2 extends JavaPlugin {
 
         getCommand("souladmin").setExecutor(new SoulsAdmin());
         getCommand("souls").setExecutor(new Souls());
-        getCommand("test").setExecutor(new Test());
+        getCommand("pickaxe").setExecutor(new PickaxeCommand());
+        getCommand("pdctest").setExecutor(new PDCTestCmd());
+        getCommand("animationtest").setExecutor(new AnimationTestCmd());
+        getCommand("testOre").setExecutor(new TestOreCommand());
 
         pm.registerEvents(new PlayerJoin(), this);
         pm.registerEvents(new BlockBreak(), this);
         pm.registerEvents(new BreakOre(), this);
-        pm.registerEvents(new BlockPlace(), this);
+        pm.registerEvents(new RightClick(), this);
+        pm.registerEvents(new InventoryClick(), this);
 
         pm.registerEvents(new Funny(), this);
 

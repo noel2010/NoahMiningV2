@@ -1,6 +1,7 @@
 pickaxeName: ""
 pickaxeLore:
   - ""
+  - ""
 
 oreRespawn: 10 # Seconds
 world: ""
@@ -12,34 +13,34 @@ messages:
   noPickaxeHeld: "<red>You need to hold a pickaxe in order to break ores."
 
 oreChances:
-  coal: 40.0
-  iron: 25.0
-  copper: 15.0
-  gold: 10.0
-  diamond: 5.0
-  emerald: 5.0
+  COAL_ORE: 40.0
+  IRON_ORE: 25.0
+  COPPER_ORE: 15.0
+  GOLD_ORE: 10.0
+  DIAMOND_ORE: 5.0
+  EMERALD_ORE: 5.0
 
 oreValues:
-  coal:
+  COAL_ORE:
     min: 0
     max: 5
-  iron:
+  IRON_ORE:
     min: 0
     max: 5
-  copper:
+  COPPER_ORE:
     min: 0
     max: 5
-  gold:
+  GOLD_ORE:
     min: 0
     max: 5
-  diamond:
+  DIAMOND_ORE:
     min: 0
     max: 5
-  emerald:
+  EMERALD_ORE:
     min: 0
     max: 5
 
-enchantIDs:
+enchantIDs: # DO NOT TOUCH
   fortune: "fortune"
   keyFinder: "keyfinder"
   oreRegen: "oreregen"
@@ -48,7 +49,13 @@ enchantIDs:
   greed: "greed"
   lootFinder: "lootfinder"
 
-Enchants: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {greedLvl} {lfLvl} | {price}
+lootchances:
+  # ADD ITEM CHANCES NEEDED
+
+runeIDs:
+  - "test"
+
+EnchantManager: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {greedLvl} {lfLvl} | {price} | {maxLvl}
   fortune:
     name: ""
     description:
@@ -73,18 +80,6 @@ Enchants: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {greedLv
     item: AIR
     slot: 0
 
-  oreRegen:
-    name: ""
-    description:
-      - ""
-    maxLvl: 0
-    price: 0
-    enchMsg: ""
-    chance: 1 # type 1 for 100%
-
-    item: AIR
-    slot: 0
-
   excavator:
     name: ""
     description:
@@ -93,7 +88,7 @@ Enchants: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {greedLv
     price: 0
     enchMsg: ""
     chance: 1 # type 1 for 100%
-    radius: 2 #n^3
+    radius: 2 # n^3
 
     item: AIR
     slot: 0
