@@ -2,6 +2,7 @@ package noah.noahMiningV2.events.custom;
 
 import lombok.Getter;
 import lombok.Setter;
+import noah.noahMiningV2.pickaxe.CustomPickaxe;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -27,14 +28,18 @@ public class OreBreak extends Event implements Cancellable {
     String oreType;
     @Setter
     @Getter
-    Player p;
+    Player player;
+    @Setter
+    @Getter
+    CustomPickaxe pickaxe;
 
 
-    public OreBreak(Block block, Location loc, String oreType, Player p){
+    public OreBreak(Block block, Location loc, String oreType, Player player, CustomPickaxe pickaxe){
         this.block = block;
         this.loc = loc;
         this.oreType = oreType;
-        this.p = p;
+        this.player = player;
+        this.pickaxe = pickaxe;
     }
 
     public static HandlerList getHandlerList(){ return HANDLER_LIST; }

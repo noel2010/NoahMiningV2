@@ -18,14 +18,20 @@ public class Config {
 
     private final FileConfiguration config = NoahMiningV2.INSTANCE.getConfig();
     private final Random rand = new Random();
+    private final List<Material> ores = List.of(Material.COAL_ORE, Material.IRON_ORE, Material.COPPER_ORE, Material.GOLD_ORE, Material.DIAMOND_ORE, Material.EMERALD_ORE);
 
-    public Material getItem(String enchant){ return Material.valueOf(config.getString("EnchantManager."+enchant+".item")); }
-    public int getSlot(String enchant) { return config.getInt("EnchantManager."+enchant+".slot "); }
+    public Material getItem(String enchant){
+        if (Material.valueOf(config.getString("EnchantManager."+enchant+".item")).isAir()) return null;
+        return Material.valueOf(config.getString("EnchantManager."+enchant+".item"));
+    }
     public int getEnchantLimit(String enchant){ return config.getInt("EnchantManager."+enchant+".maxLvl");}
     public int getEnchantPrice(String enchant){ return config.getInt("EnchantManager."+enchant+".price");}
     public String getEnchantMessage(String enchant){ return config.getString("EnchantManager."+enchant+".enchMsg");}
     public double getEnchantChance(String enchant) { return config.getDouble("EnchantManager."+enchant+".chance"); }
     public int getEnchantRadius(String enchant) { if (config.getInt("EnchantManager."+enchant+".radius") > 0) return config.getInt("EnchantManager."+enchant+".radius"); return 0; }
+    public double getEnchantBaseMulti(String enchant) { return config.getInt("EnchantManager."+enchant+".baseMulti"); }
+
+    public String getBalTopMessage(){ return config.getString("messages.baltopPlayer"); }
 
     public String getEnchantName(String enchant) { return config.getString("EnchantManager"+enchant+".name"); }
     public List<String> getEnchantDescription(String enchant) { return config.getStringList("EnchantManager"+enchant+".description"); }
@@ -43,13 +49,17 @@ public class Config {
     public Map<Material, Double> getOreChances(){
         Map<Material, Double> chances = new HashMap<>();
         if (config.isConfigurationSection("oreChances")) return chances;
+        int i = 0;
+        Material mat = null;
         for (String key : config.getConfigurationSection("oreChances").getKeys(false)){
             try {
-                Material mat = Material.valueOf(key.toUpperCase());
+                if (ores.size() > i)
+                    mat = ores.get(i);
                 double chance = config.getDouble("oreChances."+key);
                 chances.put(mat,chance);
-            } catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException | NullPointerException e){
                 NoahMiningV2.INSTANCE.getLogger().severe("Invalid Material in oreChances: "+key);
+                NoahMiningV2.INSTANCE.getLogger().severe("Invalid Material (Null): "+key);
             }
         }
         return chances;
@@ -62,7 +72,10 @@ public class Config {
     public String getWorldName() { return config.getString("world"); }
     public int getRespawnTime() { return config.getInt("oreRespawn"); }
 
-    public String getErrorMessage(String key){ return config.getString("messages"+key); }
+    public String getErrorMessage(String key){ return config.getString("messages."+key); }
+
+    public double getScaleFactor() { return config.getDouble("EnchantManager.formula.scale_factor"); }
+    public double getDeduct() { return config.getDouble("EnchantManager.formula.deduct"); }
 
     public List<String> getEnchantIDs() {
         ConfigurationSection section = config.getConfigurationSection("enchantIDs");

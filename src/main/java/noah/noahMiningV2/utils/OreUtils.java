@@ -15,20 +15,26 @@ import java.util.*;
 public class OreUtils {
 
     private static final Config conf = new Config();
-    private static Map<Material, Double> oreChances = conf.getOreChances();
+    private static Map<Material, Double> oreChances = new HashMap<>();
+
+    public static void init(){
+        oreChances.put(Material.COAL_ORE, 40.0);
+        oreChances.put(Material.IRON_ORE, 25.0);
+        oreChances.put(Material.COPPER_ORE, 15.0);
+        oreChances.put(Material.GOLD_ORE, 10.0);
+        oreChances.put(Material.DIAMOND_ORE, 7.0);
+        oreChances.put(Material.EMERALD_ORE, 3.0);
+    }
 
     public static void respawnOre(Location loc) {
         normalizeChances(oreChances);
         Material chosenOre = pickRandomOre(oreChances);
-        Bukkit.broadcastMessage("Chose ore");
         if (chosenOre != null) {
             OreRespawn rEvent = new OreRespawn(loc.getBlock(), loc, chosenOre);
             rEvent.callEvent();
-            Bukkit.broadcastMessage("Event called");
             if (!rEvent.isCancelled()) {
                 loc.getBlock().setType(chosenOre);
                 if (NoahMiningV2.mined.contains(loc)) NoahMiningV2.mined.remove(loc);
-                Bukkit.broadcastMessage("Respawned");
             }
         }else{
             NoahMiningV2.INSTANCE.getLogger().severe("-------------------------");

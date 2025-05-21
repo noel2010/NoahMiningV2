@@ -18,3 +18,9 @@ commands:
     permission: op
   testore:
     permission: op
+  itemmanager:
+    permission: op
+    aliases: im
+  soultop:
+  miningreload:
+    permission: op

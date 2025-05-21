@@ -1,24 +1,20 @@
-pickaxeName: ""
+pickaxeName: "Pickaxe"
 pickaxeLore:
   - ""
   - ""
 
 oreRespawn: 10 # Seconds
-world: ""
+world: "world"
 
-soulBalance: "" # {souls}
-oreBreak: "" # {souls}
+soulBalance: "{souls}" # {souls}
+oreBreak: "{souls}" # {souls}
 
 messages:
   noPickaxeHeld: "<red>You need to hold a pickaxe in order to break ores."
+  baltopPlayer: "<gold>{rank} <white>{player}: <green>{balance}" # {rank}, {player}, {balance}
+  maxLevel: "You have already maxed this enchant out."
+  insufficientFunds: "You do not have enough souls to pay for this enchant."
 
-oreChances:
-  COAL_ORE: 40.0
-  IRON_ORE: 25.0
-  COPPER_ORE: 15.0
-  GOLD_ORE: 10.0
-  DIAMOND_ORE: 5.0
-  EMERALD_ORE: 5.0
 
 oreValues:
   COAL_ORE:
@@ -45,17 +41,20 @@ enchantIDs: # DO NOT TOUCH
   keyFinder: "keyfinder"
   oreRegen: "oreregen"
   excavator: "excavator"
-  dupe: "dupe"
+  dupe: "duplicator"
   greed: "greed"
   lootFinder: "lootfinder"
 
 lootchances:
   # ADD ITEM CHANCES NEEDED
 
-runeIDs:
+runeIDs: # DO NOT TOUCH
   - "test"
 
-EnchantManager: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {greedLvl} {lfLvl} | {price} | {maxLvl}
+EnchantManager: # {price} | {maxLvl}
+  formula: #Px = Px-1 * scale_factor - (Px-1*deduct)
+    scale_factor: 1.45
+    deduct: 0.10
   fortune:
     name: ""
     description:
@@ -64,9 +63,9 @@ EnchantManager: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {g
     price: 0
     enchMsg: ""
     chance: 1 # type 1 for 100%
+    multi: 0
 
     item: AIR
-    slot: 0
 
   keyfinder:
     name: ""
@@ -78,7 +77,6 @@ EnchantManager: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {g
     chance: 1 # type 1 for 100%
 
     item: AIR
-    slot: 0
 
   excavator:
     name: ""
@@ -91,7 +89,6 @@ EnchantManager: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {g
     radius: 2 # n^3
 
     item: AIR
-    slot: 0
 
   duplicator:
     name: ""
@@ -103,7 +100,6 @@ EnchantManager: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {g
     chance: 1 # type 1 for 100%
 
     item: AIR
-    slot: 0
 
   greed:
     name: ""
@@ -115,7 +111,6 @@ EnchantManager: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {g
     chance: 1 # type 1 for 100%
 
     item: AIR
-    slot: 0
 
   lootFinder:
     name: ""
@@ -127,4 +122,3 @@ EnchantManager: # {fortuneLvl} {kfLvl} {oreRegenLvl} {excavatorLvl} {dupeLvl} {g
     chance: 0
 
     item: AIR
-    slot: 0

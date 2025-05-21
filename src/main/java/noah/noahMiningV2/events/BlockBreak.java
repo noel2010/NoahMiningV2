@@ -30,7 +30,7 @@ public class BlockBreak implements Listener {
         e.setCancelled(true);
 
         Location loc = e.getBlock().getLocation();
-        OreBreak rEvent = new OreBreak(e.getBlock(), loc, "", p);
+        OreBreak rEvent = new OreBreak(e.getBlock(), loc, "", p, pickaxe);
         rEvent.callEvent();
         if (!rEvent.isCancelled()){
             NoahMiningV2.mined.add(loc);

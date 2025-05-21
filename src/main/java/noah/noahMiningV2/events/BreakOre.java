@@ -11,9 +11,9 @@ import org.bukkit.inventory.ItemStack;
 public class BreakOre implements Listener {
     @EventHandler
     public void onOreBreak(OreBreak e){
-        Player p = e.getP();
-        ItemStack item = p.getInventory().getItemInMainHand();
+        Player player = e.getPlayer();
+        CustomPickaxe pickaxe = e.getPickaxe();
         if (!OreUtils.getOres().contains(e.getBlock().getType())) return;
-        if (CustomPickaxe.of(item).hasEnchants()) CustomPickaxe.of(item).triggerPickaxe(p, e.getLoc());
+        if (pickaxe.hasEnchants()) pickaxe.triggerPickaxe(player, e.getLoc());
     }
 }

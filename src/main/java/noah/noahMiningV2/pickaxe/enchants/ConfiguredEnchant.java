@@ -21,4 +21,8 @@ public class ConfiguredEnchant {
         level++;
     }
     public boolean hasUpgradedOnce(){ return level > 0; }
+
+    public String toString(){
+        return enchant.getName();
+    }
 }

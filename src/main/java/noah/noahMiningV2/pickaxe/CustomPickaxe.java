@@ -16,6 +16,7 @@ import noah.noahMiningV2.pickaxe.runes.infr.ReturnRune;
 import noah.noahMiningV2.pickaxe.runes.infr.Rune;
 import noah.noahMiningV2.pickaxe.runes.infr.VoidRune;
 import noah.noahMiningV2.utils.Config;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -24,13 +25,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import poa.poalib.Economy.Economy;
+import poa.poalib.economy.Economy;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class CustomPickaxe {
@@ -73,6 +75,17 @@ public class CustomPickaxe {
         return parseEnchant(extracted);
     }
 
+    public ConfiguredEnchant getSpecificEnchant(String id){
+        if(item == null || item.getType().isAir()) return null;
+        PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
+        if(!data.has(enchantKey)) return null;
+        for(ConfiguredEnchant enchant : getConfiguredEnchants()){
+            if(enchant.getEnchant().getID() == id) return enchant;
+            else continue;
+        }
+        return null;
+    }
+
     public ConfiguredRune getRune(){
         if (item==null || item.getType().isAir()) return null;
         Map<String, Rune> runes = runeManager.getRunes();
@@ -100,10 +113,10 @@ public class CustomPickaxe {
         if (item == null ||item.getType().isAir()) return;
         List<ConfiguredEnchant> enchants = getConfiguredEnchants();
         for (ConfiguredEnchant ench : enchants){
-            if (ench.getEnchant().getID() == id)
+            if (ench.getEnchant().getID() == id) {
                 ench.upgrade();
-            else
-                continue;
+                break;
+            }
         }
         Map<Enchant, Integer> enchs = new HashMap<>();
         for (ConfiguredEnchant ench : enchants){
@@ -161,9 +174,9 @@ public class CustomPickaxe {
             if (!ench.hasUpgradedOnce()) continue;
             Enchant enchant = ench.getEnchant();
             if (enchant instanceof VoidEnchant vEnch){
-                vEnch.trigger(loc,p,chanceBuff);
+                vEnch.trigger(loc,p,chanceBuff, ench);
             } else if (enchant instanceof ReturnEnchant rEnch) {
-                souls += rEnch.trigger(loc,p,chanceBuff);
+                souls += rEnch.trigger(loc,p,chanceBuff, ench);
             }
         }
         playerData.addSouls(souls);
@@ -195,11 +208,16 @@ public class CustomPickaxe {
     public boolean isNull(){ return item == null; }
     private static boolean isNull(ItemStack item){ return item == null; }
 
-    public void sendEnchants(){
-        Map<Enchant, Integer> enchants = getEnchants();
-        for (Map.Entry<Enchant, Integer> entry : enchants.entrySet()){
+    private void sendEnchants(){
+        for (Map.Entry<Enchant, Integer> entry : getEnchants().entrySet()){
             NoahMiningV2.INSTANCE.getLogger().warning("Enchant:"+entry.getKey().getName()+" | Level: "+entry.getValue());
         }
+    }
+
+    public void testPickaxe(){
+        sendEnchants();
+        Logger logger = NoahMiningV2.INSTANCE.getLogger();
+        logger.warning(MapToString(getEnchants()));
     }
 
 }

@@ -34,6 +34,7 @@ public class Placeholder extends PlaceholderExpansion {
 
     private char[] c = new char[]{'K', 'M', 'B', 'T', 'Q'};
     private String formatNumber(double n, int iteration) {
+        if(n < 1000) return ""+(int) n;
         double d = ((long) n / 100) / 10.0;
         boolean isRound = (d * 10) %10 == 0;
         return (d < 1000?

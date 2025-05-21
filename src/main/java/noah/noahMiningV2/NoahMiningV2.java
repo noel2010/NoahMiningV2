@@ -3,6 +3,7 @@ package noah.noahMiningV2;
 import lombok.Getter;
 import net.milkbowl.vault2.economy.Economy;
 import noah.noahMiningV2.commands.*;
+import noah.noahMiningV2.data.ItemData;
 import noah.noahMiningV2.events.*;
 import noah.noahMiningV2.jda.JdaMain;
 import noah.noahMiningV2.placeholder.Placeholder;
@@ -25,9 +26,11 @@ public final class NoahMiningV2 extends JavaPlugin {
     File dFolder = new File(getDataFolder(), "data");
     public File getdFolder(){ return dFolder; }
     public static Set<Location> mined = new HashSet<>();
-    File data = new File(getDataFolder(), "data.yml");
+    File data = new File(getdFolder() + "oreData.yml");
     YamlConfiguration dataConfig;
 
+    @Getter
+    ItemData itemData;
 
     @Override
     public void onEnable() {
@@ -57,6 +60,9 @@ public final class NoahMiningV2 extends JavaPlugin {
         getCommand("pdctest").setExecutor(new PDCTestCmd());
         getCommand("animationtest").setExecutor(new AnimationTestCmd());
         getCommand("testOre").setExecutor(new TestOreCommand());
+        getCommand("itemManager").setExecutor(new CItemManager());
+        getCommand("soultop").setExecutor(new SoulTop());
+        getCommand("miningReload").setExecutor(new Reload());
 
         pm.registerEvents(new PlayerJoin(), this);
         pm.registerEvents(new BlockBreak(), this);
@@ -65,6 +71,9 @@ public final class NoahMiningV2 extends JavaPlugin {
         pm.registerEvents(new InventoryClick(), this);
 
         pm.registerEvents(new Funny(), this);
+
+        OreUtils.init();
+        itemData = new ItemData();
 
         if (dataConfig != null && dataConfig.isConfigurationSection("minedOres")) {
             for (String key : dataConfig.getConfigurationSection("minedOres").getKeys(false)) {

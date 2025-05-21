@@ -1,19 +1,25 @@
 package noah.noahMiningV2.data;
 
+import lombok.SneakyThrows;
 import noah.noahMiningV2.NoahMiningV2;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class PlayerData {
     private Connection connection;
     private String dbURL;
-    private File dataFile = new File(NoahMiningV2.INSTANCE.getDataFolder() + "/data.db");
+    private File dataFile = new File(NoahMiningV2.INSTANCE.getDataFolder() + "/data/data.db");
     private UUID playerUUID;
 
+    @SneakyThrows
     public PlayerData(UUID playerUUID) {
+        if(!dataFile.getParentFile().exists()) dataFile.getParentFile().mkdir();
+        if (!dataFile.exists()) dataFile.createNewFile();
         this.playerUUID = playerUUID;
         this.dbURL = "jdbc:sqlite:" + dataFile.getPath();
         connect();
@@ -141,5 +147,31 @@ public class PlayerData {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Map<UUID, Integer> getPlayersSouls(){
+        Map<UUID, Integer> playersSouls = new HashMap<>();
+        File dataFile = new File(NoahMiningV2.INSTANCE.getDataFolder() + "data/data.db");
+        String dbURL = "jdbc:sqlite:"+dataFile.getPath();
+
+        try (Connection conn = DriverManager.getConnection(dbURL)){
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT pUUID, souls FROM player_data");
+
+            while (rs.next()){
+                String uuidStr = rs.getString("pUUID");
+                int souls = rs.getInt("souls");
+
+                try {
+                    UUID uuid = UUID.fromString(uuidStr);
+                    playersSouls.put(uuid, souls);
+                } catch (IllegalArgumentException e){
+                    e.printStackTrace();
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return playersSouls;
     }
 }

@@ -17,9 +17,9 @@ public class Funny implements Listener {
         }
     }
 
-    @EventHandler
-    public void onErrorJoin(AsyncPlayerPreLoginEvent e){
-        if (e.getPlayerProfile().getName().equalsIgnoreCase("error5o1"))
-            e.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_BANNED);
-    }
+//    @EventHandler
+//    public void onErrorJoin(AsyncPlayerPreLoginEvent e){
+//        if (e.getPlayerProfile().getName().equalsIgnoreCase("error5o1"))
+//            e.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_BANNED);
+//    }
 }

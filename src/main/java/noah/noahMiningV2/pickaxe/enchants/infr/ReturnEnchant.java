@@ -1,8 +1,9 @@
 package noah.noahMiningV2.pickaxe.enchants.infr;
 
+import noah.noahMiningV2.pickaxe.enchants.ConfiguredEnchant;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public interface ReturnEnchant extends Enchant {
-    int trigger(Location loc, Player p, double EnchChanceDecrease);
+    int trigger(Location loc, Player p, double EnchChanceDecrease, ConfiguredEnchant enchant);
 }
