@@ -103,7 +103,7 @@ public class CustomPickaxe {
     public List<ConfiguredEnchant> getConfiguredEnchants(){
         if (item == null || item.getType().isAir()) return new ArrayList<>();
         List<ConfiguredEnchant> enchants = new ArrayList<>();
-        for (Map.Entry<Enchant, Integer> entry : getEnchants().entrySet()){
+        for (Map.Entry<Enchant, Integer> entry : fixEnchantList().entrySet()){
             enchants.add(ConfiguredEnchant.of(entry.getKey(), entry.getValue()));
         }
         return enchants;
@@ -122,10 +122,20 @@ public class CustomPickaxe {
         for (ConfiguredEnchant ench : enchants){
             enchs.put(ench.getEnchant(), ench.getLevel());
         }
+        item = updatePickaxeLore(enchants);
         ItemMeta meta = item.getItemMeta();
         PersistentDataContainer data = meta.getPersistentDataContainer();
         data.set(enchantKey, PersistentDataType.STRING, MapToString(enchs));
         item.setItemMeta(meta);
+    }
+
+    private Map<Enchant, Integer> fixEnchantList() {
+        Map<String, Enchant> registeredEnchants = enchManager.getEnchants();
+        Map<Enchant, Integer> appliedEnchants = getEnchants();
+        for (Enchant registered : registeredEnchants.values()) {
+            appliedEnchants.putIfAbsent(registered, 0);
+        }
+        return appliedEnchants;
     }
 
     private Map<Enchant, Integer> parseEnchant(String data){
@@ -179,19 +189,26 @@ public class CustomPickaxe {
                 souls += rEnch.trigger(loc,p,chanceBuff, ench);
             }
         }
+        String breakMessage = conf.getBreakMessage();
+        breakMessage = breakMessage.replace("{souls}", ""+souls);
+        p.sendActionBar(conf.getColoredMessage(breakMessage));
         playerData.addSouls(souls);
     }
+
     public boolean hasEnchants(){
         return item.getItemMeta().getPersistentDataContainer().has(enchantKey);
     }
+
     public boolean hasProperData(){
         PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
         return data.has(enchantKey) && data.has(runeKey);
     }
+
     private static boolean hasProperData(ItemStack item){
         PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
         return data.has(enchantKey) && data.has(runeKey);
     }
+
     private ItemStack setProperData(ItemStack item){
         ItemMeta meta = item.getItemMeta();
         PersistentDataContainer data = meta.getPersistentDataContainer();
@@ -208,16 +225,18 @@ public class CustomPickaxe {
     public boolean isNull(){ return item == null; }
     private static boolean isNull(ItemStack item){ return item == null; }
 
-    private void sendEnchants(){
-        for (Map.Entry<Enchant, Integer> entry : getEnchants().entrySet()){
-            NoahMiningV2.INSTANCE.getLogger().warning("Enchant:"+entry.getKey().getName()+" | Level: "+entry.getValue());
+    public ItemStack updatePickaxeLore(List<ConfiguredEnchant> enchants){
+        ItemStack item = this.item.clone();
+        ItemMeta meta = item.getItemMeta();
+        List<String> lore = conf.getPickaxeLore();
+        for(ConfiguredEnchant enchant : enchants){
+            String replaceMessage = enchant.getEnchant().getID()+"Lvl";
+            lore.replaceAll(str->str.replace("{"+replaceMessage+"}", ""+enchant.getLevel()));
+            NoahMiningV2.INSTANCE.getLogger().warning(replaceMessage+" | "+"{"+replaceMessage+"}");
         }
-    }
-
-    public void testPickaxe(){
-        sendEnchants();
-        Logger logger = NoahMiningV2.INSTANCE.getLogger();
-        logger.warning(MapToString(getEnchants()));
+        meta.lore(conf.getColoredLore(lore));
+        item.setItemMeta(meta);
+        return item;
     }
 
 }

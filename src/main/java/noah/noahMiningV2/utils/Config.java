@@ -33,8 +33,8 @@ public class Config {
 
     public String getBalTopMessage(){ return config.getString("messages.baltopPlayer"); }
 
-    public String getEnchantName(String enchant) { return config.getString("EnchantManager"+enchant+".name"); }
-    public List<String> getEnchantDescription(String enchant) { return config.getStringList("EnchantManager"+enchant+".description"); }
+    public String getEnchantName(String enchant) { return config.getString("EnchantManager."+enchant+".name"); }
+    public List<String> getEnchantDescription(String enchant) { return config.getStringList("EnchantManager."+enchant+".description"); }
 
     public String getPickaxeName() { return config.getString("pickaxeName"); }
     public List<String> getPickaxeLore() { return config.getStringList("pickaxeLore"); }
@@ -114,8 +114,8 @@ public class Config {
     public ItemStack ConstructPickaxe(){
         ItemStack item = new ItemStack(Material.DIAMOND_PICKAXE);
         ItemMeta iMeta = item.getItemMeta();
-        iMeta.displayName(this.getColoredMessage(this.getPickaxeName()));
-        iMeta.lore(this.getColoredLore(this.getPickaxeLore()));
+        iMeta.displayName(getColoredMessage(getPickaxeName()));
+        iMeta.lore(getColoredLore(getPickaxeLore()));
         iMeta.setAttributeModifiers(Material.DIAMOND_PICKAXE.getDefaultAttributeModifiers());
         iMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         item.setItemMeta(iMeta);

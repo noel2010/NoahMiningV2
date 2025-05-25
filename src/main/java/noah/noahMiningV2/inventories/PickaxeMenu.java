@@ -118,8 +118,7 @@ public class PickaxeMenu implements InventoryHolder {
             lore.replaceAll(str->str.replace("{maxLvl}", ""+getMaxLevel(entry.getValue())));
             lore.replaceAll(str->str.replace("{level}", ""+getLevel(entry.getValue())));
 
-            List<Component> coloredLore = conf.getColoredLore(lore);
-            meta.lore(coloredLore);
+            meta.lore(conf.getColoredLore(lore));
             enchItem.setItemMeta(meta);
 
             items.add(enchItem.clone());
@@ -142,28 +141,27 @@ public class PickaxeMenu implements InventoryHolder {
         return items;
     }
 
-    private List<Enchant> getPickaxeEnchantList(){
-        List<Enchant> enchants = new ArrayList<>();
-        if (pickaxe == null) return enchants;
-        for (ConfiguredEnchant confEnch : pickaxe.getConfiguredEnchants()){
-            enchants.add(confEnch.getEnchant());
-        }
-        return enchants;
-    }
-
     private int getMaxLevel(Enchant enchant){
         if (pickaxe==null) return 0;
         return enchant.getMaxLevel();
     }
-    private int getLevel(Enchant enchant){
+    private int getConfLevel(Enchant enchant){
         if (pickaxe==null) return 0;
         List<ConfiguredEnchant> configuredEnchants = pickaxe.getConfiguredEnchants();
         for (ConfiguredEnchant confEnch : configuredEnchants){
-            if (confEnch.getEnchant() == enchant){
+            if (confEnch.getEnchant().getID() == enchant.getID()){
                 return confEnch.getLevel();
             }
         }
         return 0;
+    }
+    private int getLevel(Enchant enchant){
+        if(pickaxe==null) return -1;
+        Map<Enchant, Integer> enchants = pickaxe.getEnchants();
+        for(Map.Entry<Enchant, Integer> entry : enchants.entrySet()){
+            if(entry.getKey().getID().equals(enchant.getID())) return entry.getValue();
+        }
+        return -2;
     }
 
     private void borderUI(Inventory inventory){

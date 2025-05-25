@@ -16,6 +16,7 @@ public class RightClick implements Listener {
         if (!player.isSneaking()) return;
         if (item == null || item.getType().isAir()) return;
         if (!CustomPickaxe.of(item, false).hasProperData()) return;
-        if (e.getAction().isRightClick()) new PickaxeMenu(player, "enchants", CustomPickaxe.of(item)).openInventory();
+        if (CustomPickaxe.of(item) == null) return;
+        if (e.getAction().isRightClick()) new PickaxeMenu(player, "enchants", CustomPickaxe.of(item, false)).openInventory();
     }
 }

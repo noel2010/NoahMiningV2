@@ -1,5 +1,5 @@
 pickaxeName: "Pickaxe"
-pickaxeLore:
+pickaxeLore: # {fortuneLvl} | {keyfinderLvl} | {excavatorLvl} | {dupeLvl} | {greedLvl} # FORMAT {(ID)Lvl}
   - ""
   - ""
 
@@ -39,7 +39,6 @@ oreValues:
 enchantIDs: # DO NOT TOUCH
   fortune: "fortune"
   keyFinder: "keyfinder"
-  oreRegen: "oreregen"
   excavator: "excavator"
   dupe: "duplicator"
   greed: "greed"
@@ -51,10 +50,11 @@ lootchances:
 runeIDs: # DO NOT TOUCH
   - "test"
 
-EnchantManager: # {price} | {maxLvl}
+EnchantManager: # {price} | {level} | {maxLvl}
   formula: #Px = Px-1 * scale_factor - (Px-1*deduct)
     scale_factor: 1.45
     deduct: 0.10
+
   fortune:
     name: ""
     description:

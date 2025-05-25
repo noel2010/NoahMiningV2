@@ -32,18 +32,18 @@ public class InventoryClick implements Listener {
             PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
             if(data.has(enchantID)) {
                 id = data.get(enchantID, PersistentDataType.STRING);
-                Bukkit.broadcastMessage(id);
             } else {
-                Bukkit.broadcastMessage("Nuh");
                 return;
             }
             Player player = (Player) e.getWhoClicked();
             PlayerData pData = new PlayerData(player.getUniqueId());
             CustomPickaxe pickaxe = menu.getPickaxe();
             int price = getCalculatedPrice(pickaxe.getSpecificEnchant(id));
+            Bukkit.broadcastMessage(""+price);
+            Bukkit.broadcastMessage(""+pData.getSouls());
             if (pickaxe.getSpecificEnchant(id).getLevel() >= pickaxe.getSpecificEnchant(id).getEnchant().getMaxLevel()){
                 player.closeInventory();
-                player.sendMessage(conf.getColoredMessage(conf.getErrorMessage("insufficientFunds")));
+                player.sendMessage(conf.getColoredMessage(conf.getErrorMessage("maxLevel")));
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1f,1f);
                 return;
             }
@@ -51,6 +51,12 @@ public class InventoryClick implements Listener {
                 pData.removeSouls(price);
                 pickaxe.upgradeEnchant(id);
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP,1f,1f);
+                new PickaxeMenu(player,"enchants",pickaxe).openInventory();
+            } else {
+                player.closeInventory();
+                player.sendMessage(conf.getColoredMessage(conf.getErrorMessage("insufficientFunds")));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1,1f);
+                return;
             }
         }
     }

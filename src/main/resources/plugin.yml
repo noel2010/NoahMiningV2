@@ -1,15 +1,15 @@
 name: NoahMiningV2
-version: '2'
+version: 2.0.8
 main: noah.noahMiningV2.NoahMiningV2
 api-version: '1.21'
 softdepend:
-  - PlaceholderAPI
-  - PoaLib
-  - Vault
+- PlaceholderAPI
+- PoaLib
+- Vault
 commands:
   souladmin:
     permission: op
-  souls:
+  souls: null
   pickaxe:
     permission: op
   pdctest:
@@ -21,6 +21,6 @@ commands:
   itemmanager:
     permission: op
     aliases: im
-  soultop:
+  soultop: null
   miningreload:
     permission: op
