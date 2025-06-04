@@ -38,9 +38,7 @@ public class InventoryClick implements Listener {
             Player player = (Player) e.getWhoClicked();
             PlayerData pData = new PlayerData(player.getUniqueId());
             CustomPickaxe pickaxe = menu.getPickaxe();
-            int price = getCalculatedPrice(pickaxe.getSpecificEnchant(id));
-            Bukkit.broadcastMessage(""+price);
-            Bukkit.broadcastMessage(""+pData.getSouls());
+            int price = conf.getCalculatedPrice(pickaxe.getSpecificEnchant(id));
             if (pickaxe.getSpecificEnchant(id).getLevel() >= pickaxe.getSpecificEnchant(id).getEnchant().getMaxLevel()){
                 player.closeInventory();
                 player.sendMessage(conf.getColoredMessage(conf.getErrorMessage("maxLevel")));
@@ -61,7 +59,4 @@ public class InventoryClick implements Listener {
         }
     }
 
-    private int getCalculatedPrice(ConfiguredEnchant enchant){
-        return (int) (conf.getEnchantPrice(enchant.getEnchant().getID())*(conf.getScaleFactor()-conf.getDeduct()));
-    }
 }

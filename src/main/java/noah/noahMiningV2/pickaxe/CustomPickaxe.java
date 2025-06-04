@@ -25,7 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import poa.poalib.economy.Economy;
+import poa.poalib.Economy.Economy;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -54,8 +54,10 @@ public class CustomPickaxe {
         if (hasProperData(item))
             this.item = item;
 
-        if (setData)
+        if (setData) {
             this.item = setProperData(item);
+            updatePickaxeLore(getConfiguredEnchants());
+        }
         else
             this.item = item;
     }
@@ -113,16 +115,17 @@ public class CustomPickaxe {
         if (item == null ||item.getType().isAir()) return;
         List<ConfiguredEnchant> enchants = getConfiguredEnchants();
         for (ConfiguredEnchant ench : enchants){
-            if (ench.getEnchant().getID() == id) {
+            if (ench.getEnchant().getID().equals(id)) {
                 ench.upgrade();
                 break;
-            }
+            } else
+                continue;
         }
         Map<Enchant, Integer> enchs = new HashMap<>();
         for (ConfiguredEnchant ench : enchants){
             enchs.put(ench.getEnchant(), ench.getLevel());
         }
-        item = updatePickaxeLore(enchants);
+        updatePickaxeLore(enchants);
         ItemMeta meta = item.getItemMeta();
         PersistentDataContainer data = meta.getPersistentDataContainer();
         data.set(enchantKey, PersistentDataType.STRING, MapToString(enchs));
@@ -225,18 +228,17 @@ public class CustomPickaxe {
     public boolean isNull(){ return item == null; }
     private static boolean isNull(ItemStack item){ return item == null; }
 
-    public ItemStack updatePickaxeLore(List<ConfiguredEnchant> enchants){
-        ItemStack item = this.item.clone();
+    private void updatePickaxeLore(List<ConfiguredEnchant> enchants){
         ItemMeta meta = item.getItemMeta();
         List<String> lore = conf.getPickaxeLore();
-        for(ConfiguredEnchant enchant : enchants){
-            String replaceMessage = enchant.getEnchant().getID()+"Lvl";
-            lore.replaceAll(str->str.replace("{"+replaceMessage+"}", ""+enchant.getLevel()));
-            NoahMiningV2.INSTANCE.getLogger().warning(replaceMessage+" | "+"{"+replaceMessage+"}");
-        }
+        for (String str : lore) NoahMiningV2.INSTANCE.getLogger().warning(str);
+//        for(ConfiguredEnchant enchant : enchants){
+//            String replaceMessage = enchant.getEnchant().getID()+"Lvl";
+//            lore.replaceAll(str->str.replace("{"+replaceMessage+"}", ""+enchant.getLevel()));
+//            NoahMiningV2.INSTANCE.getLogger().warning(replaceMessage+" | "+"{"+replaceMessage+"}");
+//        }
         meta.lore(conf.getColoredLore(lore));
         item.setItemMeta(meta);
-        return item;
     }
 
 }

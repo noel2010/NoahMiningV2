@@ -20,7 +20,7 @@ public class KeyFinder implements VoidEnchant {
         double baseC = Math.min(conf.getEnchantChance(getID())+(0.03* enchant.getLevel())+EnchChanceDecrease, 1.0);
         double c = rand.nextDouble();
         if(!(c <= baseC)) return;
-        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "givekey rare "+p.getName());
+        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), conf.getKeyCommand().replace("{player}", p.getName()));
         p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP,1f,1f);
         String msg = conf.getEnchantName(getID());
         msg = msg.replace("{key}", "Rare");

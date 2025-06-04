@@ -14,7 +14,6 @@ import noah.noahMiningV2.utils.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -117,6 +116,8 @@ public class PickaxeMenu implements InventoryHolder {
             List<String> lore = conf.getEnchantDescription(entry.getValue().getID());
             lore.replaceAll(str->str.replace("{maxLvl}", ""+getMaxLevel(entry.getValue())));
             lore.replaceAll(str->str.replace("{level}", ""+getLevel(entry.getValue())));
+            lore.replaceAll(str->str.replace("{price}", ""+conf.getCalculatedPriceEnchant(entry.getValue())));
+
 
             meta.lore(conf.getColoredLore(lore));
             enchItem.setItemMeta(meta);
@@ -185,4 +186,5 @@ public class PickaxeMenu implements InventoryHolder {
             inv.setItem(rightI, borderItem);
         }
     }
+
 }

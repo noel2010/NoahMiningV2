@@ -13,10 +13,11 @@ public class Fortune implements ReturnEnchant {
 
     @Override
     public int trigger(Location loc, Player p, double EnchChanceDecrease, ConfiguredEnchant enchant) {
-        int souls = 0;
-        if (OreUtils.getOres().contains(loc.getBlock().getType()))
+        int souls = 1;
+        if (OreUtils.getOres().contains(loc.getBlock().getType())) {
             souls = conf.getRandomOreValue(loc.getBlock().getType());
-        souls = (int) (souls+(souls*(conf.getEnchantBaseMulti(getID())*enchant.getLevel())));
+            souls = (int) (souls + (souls * (conf.getEnchantBaseMulti(getID()) * enchant.getLevel()+1)));
+        }
         return souls;
     }
 

@@ -4,6 +4,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import noah.noahMiningV2.NoahMiningV2;
 import noah.noahMiningV2.data.PlayerData;
+import noah.noahMiningV2.pickaxe.enchants.ConfiguredEnchant;
+import noah.noahMiningV2.pickaxe.enchants.infr.Enchant;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,13 +33,15 @@ public class Config {
     public int getEnchantRadius(String enchant) { if (config.getInt("EnchantManager."+enchant+".radius") > 0) return config.getInt("EnchantManager."+enchant+".radius"); return 0; }
     public double getEnchantBaseMulti(String enchant) { return config.getInt("EnchantManager."+enchant+".baseMulti"); }
 
+    public String getKeyCommand() { return config.getString("EnchantManager.keyfinder.command"); }
+
     public String getBalTopMessage(){ return config.getString("messages.baltopPlayer"); }
 
     public String getEnchantName(String enchant) { return config.getString("EnchantManager."+enchant+".name"); }
     public List<String> getEnchantDescription(String enchant) { return config.getStringList("EnchantManager."+enchant+".description"); }
 
-    public String getPickaxeName() { return config.getString("pickaxeName"); }
-    public List<String> getPickaxeLore() { return config.getStringList("pickaxeLore"); }
+    public String getPickaxeName() { return config.getString("pickaxe.name"); }
+    public List<String> getPickaxeLore() { return config.getStringList("pickaxe.lore"); }
 
     public String getSoulBalanceMsg(PlayerData pData) {
         String msg = config.getString("soulBalance");
@@ -65,8 +69,8 @@ public class Config {
         return chances;
     }
 
-    private int getOreValueMax(Material ore) { return config.getInt("oreValues."+ore.toString()+".max"); }
-    private int getOreValueMin(Material ore) { return config.getInt("oreValues."+ore.toString()+".min"); }
+    private int getOreValueMax(Material ore) { NoahMiningV2.INSTANCE.getLogger().warning(ore.toString()); return config.getInt("oreValues."+ore.toString()+".max"); }
+    private int getOreValueMin(Material ore) { NoahMiningV2.INSTANCE.getLogger().warning(ore.toString()); return config.getInt("oreValues."+ore.toString()+".min"); }
     public int getRandomOreValue(Material ore) { return rand.nextInt(getOreValueMin(ore), getOreValueMax(ore)+1); }
 
     public String getWorldName() { return config.getString("world"); }
@@ -120,6 +124,18 @@ public class Config {
         iMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         item.setItemMeta(iMeta);
         return item;
+    }
+
+    public int getCalculatedPrice(ConfiguredEnchant enchant){
+        return (int) (getEnchantPrice(enchant.getEnchant().getID())*(getScaleFactor()-getDeduct()));
+    }
+
+    public int getCalculatedPriceEnchant(Enchant enchant){
+        return (int) (getEnchantPrice(enchant.getID())*(getScaleFactor()-getDeduct()));
+    }
+
+    public int getCalculatedPriceID(String id){
+        return (int) (getEnchantPrice(id)*(getScaleFactor()-getDeduct()));
     }
 
 }

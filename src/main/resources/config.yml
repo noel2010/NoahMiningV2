@@ -1,5 +1,6 @@
-pickaxeName: "Pickaxe"
-pickaxeLore: # {fortuneLvl} | {keyfinderLvl} | {excavatorLvl} | {dupeLvl} | {greedLvl} # FORMAT {(ID)Lvl}
+pickaxe:
+  name: "Pickaxe"
+  lore: # {fortuneLvl} | {keyfinderLvl} | {excavatorLvl} | {dupeLvl} | {greedLvl} # FORMAT {(ID)Lvl}
   - ""
   - ""
 
@@ -75,6 +76,7 @@ EnchantManager: # {price} | {level} | {maxLvl}
     price: 0
     enchMsg: ""
     chance: 1 # type 1 for 100%
+    command: ""
 
     item: AIR
 

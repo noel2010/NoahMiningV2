@@ -5,7 +5,7 @@ import noah.noahMiningV2.pickaxe.enchants.infr.VoidEnchant;
 import noah.noahMiningV2.utils.Config;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import poa.poalib.economy.Economy;
+import poa.poalib.Economy.Economy;
 
 import java.util.Random;
 

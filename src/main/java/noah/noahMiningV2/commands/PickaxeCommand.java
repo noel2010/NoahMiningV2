@@ -20,7 +20,8 @@ public class PickaxeCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player p){
             ItemStack item = conf.ConstructPickaxe();
-            p.getInventory().addItem(CustomPickaxe.of(item, true).getItem());
+            CustomPickaxe pickaxe = CustomPickaxe.of(item, true);
+            p.getInventory().addItem(pickaxe.getItem());
         }
         return false;
     }
